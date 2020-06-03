@@ -16,7 +16,7 @@ class TestLogin:
 
     def setup(self):
         has_options = Options()
-        has_options.debugger_address = "127.0.0.1:9222"
+        has_options.debugger_address = "127.0.0.1:9223"
         print(has_options)
         # 复用浏览器前需要关闭后台所有的chrome
         # chrome --remote-debugging-port=9222
@@ -41,13 +41,15 @@ class TestLogin:
         sleep(5)
 
     def test_login_shelve(self):
-        self.driver.get("https://work.weixin.qq.com/wework_admin/frame")
-        # 直接打开一个文件,保存一份cookies到db，一个小型数据库
+        # shelve.open打开或创建一个shelve对象,文件不存在则创建，存在则打开
+        # 保存一份cookies到db，一个小型数据库
         db = shelve.open("cookies")
-        # db["cookies"] = self.driver.get_cookies()
+        db["cookies"] = self.driver.get_cookies()
+        # 将cookies保存到db中
         # 第二次就可以不执行 db["cookies"] = self.driver.get_cookies()，直接获取cookies
         cookies = db["cookies"]
-        # 获取cookies
+        print(cookies)
+        # # 获取cookies
         for cookie in cookies:
             if "expiry" in cookie.keys():
                 cookie.pop("expiry")
