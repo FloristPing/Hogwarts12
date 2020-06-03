@@ -15,7 +15,14 @@ from selenium.webdriver.common.by import By
 class TestLogin:
 
     def setup(self):
-        self.driver = webdriver.Chrome()
+        has_options = Options()
+        has_options.debugger_address = "127.0.0.1:9222"
+        print(has_options)
+        # 复用浏览器前需要关闭后台所有的chrome
+        # chrome --remote-debugging-port=9222
+        # 这两个端口要一致，才能联通复用
+        self.driver = webdriver.Chrome(options=has_options)
+        #   复用浏览器时该步骤报错
 
     def teardown(self):
         self.driver.quit()
